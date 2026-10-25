@@ -42,6 +42,7 @@ const elements = {
   searchInput: document.querySelector("#searchInput"),
   priorityFilter: document.querySelector("#priorityFilter"),
   importData: document.querySelector("#importData"),
+  clearCompleted: document.querySelector("#clearCompleted"),
   toast: document.querySelector("#toast"),
 };
 
@@ -87,6 +88,7 @@ function renderStats() {
   elements.statUpcoming.textContent = stats.upcoming;
   elements.statOverdue.textContent = stats.overdue;
   elements.statCompleted.textContent = `${stats.completed} completada${stats.completed === 1 ? "" : "s"}`;
+  elements.clearCompleted.disabled = stats.completed === 0;
   elements.progressValue.textContent = `${stats.progress}%`;
   elements.progressRing.style.setProperty("--progress", `${stats.progress * 3.6}deg`);
   elements.pendingHours.textContent = `${Number(stats.pendingHours.toFixed(1))} h`;
@@ -209,6 +211,15 @@ function removeTask(id) {
   showToast("Tarea eliminada");
 }
 
+function clearCompleted() {
+  const completedCount = tasks.filter((task) => task.completed).length;
+  if (!completedCount || !window.confirm(`¿Eliminar ${completedCount} tarea${completedCount === 1 ? "" : "s"} completada${completedCount === 1 ? "" : "s"}?`)) return;
+  tasks = tasks.filter((task) => !task.completed);
+  saveTasks();
+  renderTasks();
+  showToast("Tareas completadas eliminadas");
+}
+
 function sampleTasks() {
   const addDays = (days) => isoLocalDate(new Date(Date.now() + days * 86400000));
   return [
@@ -272,6 +283,7 @@ function bindEvents() {
   document.querySelector("#themeToggle").addEventListener("click", toggleTheme);
   document.querySelector("#loadDemo").addEventListener("click", loadDemo);
   document.querySelector("#exportData").addEventListener("click", exportData);
+  elements.clearCompleted.addEventListener("click", clearCompleted);
   elements.importData.addEventListener("change", importData);
   elements.form.addEventListener("submit", upsertTask);
   elements.dialog.addEventListener("click", (event) => {

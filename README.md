@@ -19,6 +19,7 @@ Los estudiantes suelen recibir tareas por distintos cursos y canales. Al no tene
 - Filtrar por estado y prioridad.
 - Detectar tareas vencidas y próximas a vencer.
 - Calcular progreso, carga pendiente y cursos activos.
+- Eliminar en conjunto las tareas completadas, previa confirmación.
 - Guardar automáticamente los datos en `localStorage`.
 - Exportar e importar un respaldo en formato JSON.
 - Cambiar entre tema claro y oscuro.
